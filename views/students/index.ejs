@@ -39,13 +39,22 @@
         <tr>
           <th>Title</th>
           <th>Department</th>
+          <th>Professor(s)</th>
           <th>Block</th>
           <th></th>
         </tr>
         <% for (var i = 0; i < courses.length; i++) { %>
         <tr>
-          <td><%= courses[i].title %></td>
+          <td><%= courses[i].title %>
+            <br>  <a>Enrolled Students</a>
+            <br><%= courses[i].students %>
+          </td>
           <td><%= courses[i].department %></td>
+          <td>
+          <% for (var j = 0; j < courses[i].professors.length; j++) { %>
+            <%= courses[i].professors[j].name %>
+          <% } %>
+          </td>
           <td><%= courses[i].block %></td>
           <td><form action="/students/courses" method="post"><button type="submit" class="btn btn-success btn-xs" name="courseId" value="<%= courses[i]._id %>">Add to Courses</button></form></td>
         </tr>
@@ -56,10 +65,10 @@
       <% } %>
       <% if (user.courseIds.length) { %>
         <h2>Your courses:</h2>
-        <% for (var i = 0; i < studentCourses.length; i++) { %>
-          <p class="lead"><a class="text-default" href="/students/courses/<%= studentCourses[i]._id %>"><strong><%= studentCourses[i].title %></strong></a><br>
-            <em><%= studentCourses[i].department %>, Block <%= studentCourses[i].block %></em>
-          <form action="/students/courses/removeCourse" method="post"><button type="submit" class="btn btn-warning btn-xs" name="courseId" value="<%= studentCourses[i]._id %>">Remove this Course</button></form></p>
+        <% for (var i = 0; i < userCourses.length; i++) { %>
+          <p class="lead"><a class="text-default" href="/students/courses/<%= userCourses[i]._id %>"><strong><%= userCourses[i].title %></strong></a><br>
+            <em><%= userCourses[i].department %>, Block <%= userCourses[i].block %></em>
+          <form action="/students/courses/removeCourse" method="post"><button type="submit" class="btn btn-warning btn-xs" name="courseId" value="<%= userCourses[i]._id %>">Remove this Course</button></form></p>
           <hr>
         <% } %>
       <% } %>

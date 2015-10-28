@@ -22,16 +22,60 @@ router.use(function ensureStudent(req, res, next) {
   }
 })
 
+function matchup(courses, students) {
+  courses.forEach(function(course) {
+    course.students = [];
+    students.forEach(function(student) {
+      console.log("almost")
+      console.log(student.courseIds);
+      console.log(course._id, "yo");
+      // var courseIdStrings = student.courseIds.map(function(e) {
+      //   new ObjectId(e);
+      // })
+      if (student.courseIds.indexOf(course._id) > -1) {
+        course.students.push(student);
+        console.log("worked! ", course.students)
+      }
+    })
+  })
+  return courses;
+}
+
+function matchupProfs(courses, professors) {
+  courses.forEach(function(course) {
+    course.professors = [];
+    professors.forEach(function(professor) {
+      if (professor.courseId === course._id.toString()) {
+        course.professors.push(professor);
+      }
+    })
+  })
+  return courses;
+}
+
 router.get('/', function(req, res, next) {
   Courses.find({}, function(err, courses) {
     if (err) return err;
-    console.log(req.session.user.courseIds)
-    Students.findOne({_id: req.session.user._id}, function(err, student) {
-      Courses.find({_id: {$in: student.courseIds}}, function(err, docs) {
-        if (err) console.log(err);
-        console.log(docs)
-        res.render('students/index', {courses: courses, studentCourses: docs});
-      })            
+    var allCourseIds = [];
+    courses.forEach(function(elem) {
+      allCourseIds.push(elem._id);
+    })
+    Students.find({courseIds: {$in: allCourseIds}}, function(err, students) {
+      console.log("students: ",students)
+      matchup(courses, students);
+      var allCourseIdStrings = [];
+      courses.forEach(function(elem) {
+        allCourseIdStrings.push(elem._id.toString());
+      })
+      Professors.find({courseId: {$in: allCourseIdStrings}}, function(err, professors) {
+        matchupProfs(courses, professors);
+        Students.findOne({_id: req.session.user._id}, function(err, student) {
+          Courses.find({_id: {$in: student.courseIds}}, function(err, userCourses) {
+            if (err) console.log(err);
+            res.render('students/index', {courses: courses, userCourses: userCourses});
+          })            
+        })
+      })
     })
   })
 })
