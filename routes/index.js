@@ -61,7 +61,7 @@ router.post('/signup', function(req, res, next) {
   // use professional regex to check if its a valid email
   if (!req.body.password || !req.body.passwordConfirm) errors.push("Password can't be blank");
   if (req.body.password !== req.body.passwordConfirm) errors.push("Passwords must match");
-  if (errors.length) res.render('signup', {errors: errors, email: "", inputEmail: req.body.email, inputName: req.body.name});
+  if (errors.length) res.render('signup', {errors: errors, email: "", inputEmail: req.body.email, inputName: req.body.name, inputOffice: req.body.office});
   Students.findOne({email: req.body.email}, function(err, user) {
     if (err) return err;
     if (user) errors.push("Email is already in use");
