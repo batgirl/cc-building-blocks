@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cosmo/bootstrap.min.css">
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.js"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Building Blocks</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <% if (email) { %>
+            <li><a href="/signout">Sign Out</a></li>
+            <% } else { %>
+            <li><a href="/signup">Sign Up</a></li>
+            <li><a href="/login">Log In</a></li>
+            <% }%>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <h1>Sign Up</h1>
+      <div class="container">
+        <% if (errors) { %>
+          <ul>
+            <% for (var i = 0; i < errors.length; i++) { %>
+            <li class="myError"><%= errors[i] %></li>
+            <% } %>
+          </ul>
+        <% } %>
+        <form action="/signup" method="post">
+          <div class="form-group">
+            <h5>I am a...</h5>
+            <label>student <input type="radio" name="accountType" value="student"> </label><br>
+            <label>professor <input type="radio" name="accountType" value="professor"></label>
+          </div>
+          <div class="form-group" id="year">
+            <label for="year">Year</label><br>
+            <select name="year">
+              <option value="freshman">Freshman</option> 
+              <option value="sophomore">Sophomore</option>
+              <option value="junior">Junior</option>
+              <option value="senior">Senior</option>
+            </select>
+          </div>          
+          <div class="form-group" id="office">
+            <label for="inputOffice">Office</label><br>
+            <input type="text" id="inputOffice" name="office" value="<%= inputOffice %>">
+          </div>          
+          <div class="form-group">
+            <label for="inputName">Name</label><br>
+            <input type="text" id="inputName" name="name" value="<%= inputName %>">
+          </div>
+          <div class="form-group">
+            <label for="inputEmail">Email</label><br>
+            <input type="text" id="inputEmail" name="email" value="<%= inputEmail %>">
+          </div>
+          <div class="form-group">
+            <label for="inputPassword">Password</label><br>
+            <input type="password" id="inputPassword" name="password">
+          </div>
+          <div class="form-group">
+            <label for="inputPasswordConfirm">Password Confirmation</label><br>
+            <input type="password" id="inputPasswordConfirm" name="passwordConfirm">
+          </div>
+          <button type="submit" class="btn btn-success">Sign Up</button>
+        </form>
+      </div>
+    </div>
+    <script>
+    $(document).ready(function() {
+      $("#year").hide();
+      $("#office").hide();
+      $("input[name='accountType']").click(fromRadioValue);
+    })
+    function fromRadioValue() {
+      var radioValue = $('input[name="accountType"]:checked').val();
+      if (radioValue === "student") {
+        $("#year").show();
+        $("#office").hide()
+      }
+      if (radioValue === "professor") {
+        $("#office").show();
+        $("#year").hide()
+      }
+    }
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  </body>
+</html>

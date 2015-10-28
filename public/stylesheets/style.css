@@ -1,8 +1,23 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+.myError {
+  color: red;
 }
 
-a {
-  color: #00B7FF;
+input[type=text], input[type=password] {
+  width: 500px;
+  height: 50px;
+  border-radius: 7px;
+  font-size: 24px;
+  padding-left: 7px;
+}
+
+ul.nav li a, ul.nav li a:visited {
+    color: #fff !important;
+}
+
+ul.nav li a:hover, ul.nav li a:active {
+    color: #fff !important;
+}
+
+ul.nav li.active a {
+    color: #fff !important;
 }

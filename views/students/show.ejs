@@ -33,16 +33,24 @@
       </div>
     </nav>
     <div class="container">
-      <h1>Welcome</h1>
-      <div class="container">
-        <% if (accountType === "student") { %>
-          <p class="lead">Hello <%= user.name %>!<br>Year: <%= user.year %></p>
-          <p class="lead"><a href="/students/courses">View all courses</a></p>
-        <% } else if (accountType === "professor") { %>    
-          <p class="lead">Hello <%= user.name %>! You are located at <%= user.office %>.</p>
-          <p class="lead"><a href="/professors/courses">View all courses</a></p>
-        <% } %>  
-      </div>
+      <h2><strong><%= course.title %></strong></h2>
+      <h4><em><%= course.department %>, Block <%= course.block %></em></h4>
+      <% if (students.length) { %>
+      <h3>Students in class:</h3>
+      <ul>
+      <% for (var i = 0; i < students.length; i++) { %>
+        <li><%= students[i].name %></li>
+      <% } %>
+      </ul>
+      <% } %>
+      <% if (professors.length) { %>
+      <h3>Professor<% if (professors.length > 1) { %>s<% } %>:</h3>
+        <ul>
+        <% for (var i = 0; i < professors.length; i++) { %>
+          <li><%= professors[i].name %>, <em><%= professors[i].office %></em></li>
+        <% } %>
+        </ul>
+      <% } %>
     </div>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   </body>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Building Blocks</title>
+    <title>Log In</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cosmo/bootstrap.min.css">
     <link rel="stylesheet" href="stylesheets/style.css">
@@ -22,7 +22,7 @@
           <ul class="nav navbar-nav">
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <% if (user) { %>
+            <% if (email) { %>
             <li><a href="/signout">Sign Out</a></li>
             <% } else { %>
             <li><a href="/signup">Sign Up</a></li>
@@ -33,15 +33,26 @@
       </div>
     </nav>
     <div class="container">
-      <h1>Welcome</h1>
+      <h1>Log In</h1>
       <div class="container">
-        <% if (accountType === "student") { %>
-          <p class="lead">Hello <%= user.name %>!<br>Year: <%= user.year %></p>
-          <p class="lead"><a href="/students/courses">View all courses</a></p>
-        <% } else if (accountType === "professor") { %>    
-          <p class="lead">Hello <%= user.name %>! You are located at <%= user.office %>.</p>
-          <p class="lead"><a href="/professors/courses">View all courses</a></p>
-        <% } %>  
+        <% if (errors) { %>
+          <ul>
+            <% for (var i = 0; i < errors.length; i++) { %>
+            <li class="myError"><%= errors[i] %></li>
+            <% } %>
+          </ul>
+        <% } %>
+        <form action="/login" method="post">
+          <div class="form-group">
+            <label for="inputEmail">Email</label><br>
+            <input type="text" id="inputEmail" name="email" value="<%= inputEmail%>">
+          </div>
+          <div class="form-group">
+            <label for="inputPassword">Password</label><br>
+            <input type="password" id="inputPassword" name="password">
+          </div>
+          <button type="submit" class="btn btn-default">Log In</button>
+        </form>
       </div>
     </div>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>

@@ -4,9 +4,13 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+require('dotenv').load();
+var cookieSession = require('cookie-session');
+// var db = require('monk')(process.env.MONGOLAB_URI || 'localhost/building-blocks');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var professors = require('./routes/professors');
+var students = require('./routes/students');
 
 var app = express();
 
@@ -21,9 +25,18 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieSession({
+  name: 'session',
+  keys: [
+    process.env.SECRET_KEY_1,
+    process.env.SECRET_KEY_2,
+    process.env.SECRET_KEY_3
+  ]
+}));
 
 app.use('/', routes);
-app.use('/users', users);
+app.use('/professors/courses', professors);
+app.use('/students/courses', students);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

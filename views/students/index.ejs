@@ -33,16 +33,36 @@
       </div>
     </nav>
     <div class="container">
-      <h1>Welcome</h1>
-      <div class="container">
-        <% if (accountType === "student") { %>
-          <p class="lead">Hello <%= user.name %>!<br>Year: <%= user.year %></p>
-          <p class="lead"><a href="/students/courses">View all courses</a></p>
-        <% } else if (accountType === "professor") { %>    
-          <p class="lead">Hello <%= user.name %>! You are located at <%= user.office %>.</p>
-          <p class="lead"><a href="/professors/courses">View all courses</a></p>
-        <% } %>  
-      </div>
+      <h2>All courses:</h2>
+      <% if (courses.length) { %>
+      <table class="table table-bordered table-hover">
+        <tr>
+          <th>Title</th>
+          <th>Department</th>
+          <th>Block</th>
+          <th></th>
+        </tr>
+        <% for (var i = 0; i < courses.length; i++) { %>
+        <tr>
+          <td><%= courses[i].title %></td>
+          <td><%= courses[i].department %></td>
+          <td><%= courses[i].block %></td>
+          <td><form action="/students/courses" method="post"><button type="submit" class="btn btn-success btn-xs" name="courseId" value="<%= courses[i]._id %>">Add to Courses</button></form></td>
+        </tr>
+        <% } %>
+      </table>
+      <% } else { %>
+      <p>There are no courses to show.</p>
+      <% } %>
+      <% if (user.courseIds.length) { %>
+        <h2>Your courses:</h2>
+        <% for (var i = 0; i < studentCourses.length; i++) { %>
+          <p class="lead"><a class="text-default" href="/students/courses/<%= studentCourses[i]._id %>"><strong><%= studentCourses[i].title %></strong></a><br>
+            <em><%= studentCourses[i].department %>, Block <%= studentCourses[i].block %></em>
+          <form action="/students/courses/removeCourse" method="post"><button type="submit" class="btn btn-warning btn-xs" name="courseId" value="<%= studentCourses[i]._id %>">Remove this Course</button></form></p>
+          <hr>
+        <% } %>
+      <% } %>
     </div>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   </body>
