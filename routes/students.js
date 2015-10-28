@@ -80,6 +80,7 @@ router.get('/', function(req, res, next) {
 })
 
 // make sure can only add once!!!
+// sort courses by block
 
 router.post('/', function(req, res, next) {
   Students.findOne({_id: req.session.user._id}, function(err, user) {

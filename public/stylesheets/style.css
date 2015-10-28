@@ -11,13 +11,13 @@ input[type=text], input[type=password] {
 }
 
 ul.nav li a, ul.nav li a:visited {
-    color: #fff !important;
+    color: #000 !important;
 }
 
 ul.nav li a:hover, ul.nav li a:active {
-    color: #fff !important;
+    color: #000 !important;
 }
 
 ul.nav li.active a {
-    color: #fff !important;
+    color: #000 !important;
 }
