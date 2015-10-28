@@ -29,13 +29,12 @@ function matchup(courses, students) {
       console.log("almost")
       console.log(student.courseIds);
       console.log(course._id, "yo");
-      // var courseIdStrings = student.courseIds.map(function(e) {
-      //   new ObjectId(e);
-      // })
-      if (student.courseIds.indexOf(course._id) > -1) {
-        course.students.push(student);
-        console.log("worked! ", course.students)
-      }
+      student.courseIds.forEach(function(courseId) {
+        if (courseId.toString() === course._id.toString()) {
+          course.students.push(student)
+          console.log("worked! ", course.students)
+        }
+      })
     })
   })
   return courses;
@@ -80,7 +79,7 @@ router.get('/', function(req, res, next) {
   })
 })
 
-// make sure can only add once
+// make sure can only add once!!!
 
 router.post('/', function(req, res, next) {
   Students.findOne({_id: req.session.user._id}, function(err, user) {

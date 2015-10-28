@@ -46,13 +46,16 @@
         <% for (var i = 0; i < courses.length; i++) { %>
         <tr>
           <td><%= courses[i].title %>
-            <br>  <a>Enrolled Students</a>
-            <br><%= courses[i].students %>
+            <br>  <a>Enrolled Students</a><br>
+          <% for (var k = 0; k < courses[i].students.length; k++) { %>
+            <%= courses[i].students[k].name %><br>
+          <% } %>
           </td>
           <td><%= courses[i].department %></td>
           <td>
           <% for (var j = 0; j < courses[i].professors.length; j++) { %>
-            <%= courses[i].professors[j].name %>
+            <%= courses[i].professors[j].name %><br>
+            <em><%= courses[i].professors[j].office %></em>
           <% } %>
           </td>
           <td><%= courses[i].block %></td>
