@@ -37,11 +37,11 @@
       <h1>Welcome</h1>
       <div class="container">
         <% if (accountType === "student") { %>
-          <p class="lead">Hello <%= user.name %>!
-          <p class="lead"><a href="/students/courses">View all courses</a></p>
+          <p class="lead">Hello <%= user.name %>!</p>
+          <a href="/students/courses" class="btn btn-default" role="button">View all courses</a>
         <% } else if (accountType === "professor") { %>    
           <p class="lead">Hello <%= user.name %>! You are located at <%= user.office %>.</p>
-          <p class="lead"><a href="/professors/courses">View all courses</a></p>
+          <a href="/professors/courses" class="btn btn-default" role="button">View all courses</a>
         <% } else { %>
         <p class="lead">Please log in or sign up to view courses and create your schedule.</p>
         <% } %>  

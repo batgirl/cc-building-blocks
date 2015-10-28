@@ -63,7 +63,11 @@
           <% } %>
           </td>
           <td><%= courses[i].block %></td>
-          <td><form action="/students/courses" method="post"><button type="submit" class="btn btn-success btn-xs" name="courseId" value="<%= courses[i]._id %>">Add to Courses</button></form></td>
+          <td>
+            <% if (userCourses.indexOf(courses[i]) == -1) { %>
+            <form action="/students/courses" method="post"><button type="submit" class="btn btn-success btn-xs" name="courseId" value="<%= courses[i]._id %>">Add to Courses</button></form>
+            <% } %>
+          </td>
         </tr>
         <script>
         $(document).ready(function(){

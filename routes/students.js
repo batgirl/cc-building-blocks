@@ -26,13 +26,13 @@ function matchup(courses, students) {
   courses.forEach(function(course) {
     course.students = [];
     students.forEach(function(student) {
-      console.log("almost")
-      console.log(student.courseIds);
-      console.log(course._id, "yo");
+      // console.log("almost")
+      // console.log(student.courseIds);
+      // console.log(course._id, "yo");
       student.courseIds.forEach(function(courseId) {
         if (courseId.toString() === course._id.toString()) {
           course.students.push(student)
-          console.log("worked! ", course.students)
+          // console.log("worked! ", course.students)
         }
       })
     })
@@ -60,7 +60,7 @@ router.get('/', function(req, res, next) {
       allCourseIds.push(elem._id);
     })
     Students.find({courseIds: {$in: allCourseIds}}, function(err, students) {
-      console.log("students: ",students)
+      // console.log("students: ",students)
       matchup(courses, students);
       var allCourseIdStrings = [];
       courses.forEach(function(elem) {
@@ -84,16 +84,24 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
   Students.findOne({_id: req.session.user._id}, function(err, user) {
-    if (user.courseIds.indexOf(new ObjectId(req.body.courseId)) > -1) return;
-    else {
+    var checkDuplicate = false;
+    user.courseIds.forEach(function(elem) {
+      if (elem.toString() === req.body.courseId) {
+        checkDuplicate = true;
+      }
+    })
+    if (checkDuplicate) {
+      res.redirect('/students/courses');
+    } else {
       Students.update({_id: req.session.user._id}, {$push: {courseIds: new ObjectId(req.body.courseId)}}, function(err, user) {
         if (err) return err;
         req.session.user.courseIds.push(new ObjectId(req.body.courseId));
         res.redirect('/students/courses');
-      })      
-    }
-  })
+      })   
+    }   
+  })   
 })
+
 
 router.post('/removeCourse', function(req, res, next) {
   Students.update({_id: req.session.user._id}, {$pull: {courseIds: new ObjectId(req.body.courseId)}}, function(err, user) {
