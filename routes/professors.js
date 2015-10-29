@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var cookieParser = require('cookie-parser');
-var db = require('monk')('localhost/building-blocks');
+var db = require('monk')(process.env.MONGOLAB_URI || 'localhost/building-blocks');
 var Courses = db.get('courses');
 var Textbooks = db.get('textbooks');
 var Classrooms = db.get('classrooms');
