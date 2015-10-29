@@ -26,13 +26,9 @@ function matchup(courses, students) {
   courses.forEach(function(course) {
     course.students = [];
     students.forEach(function(student) {
-      // console.log("almost")
-      // console.log(student.courseIds);
-      // console.log(course._id, "yo");
       student.courseIds.forEach(function(courseId) {
         if (courseId.toString() === course._id.toString()) {
           course.students.push(student)
-          // console.log("worked! ", course.students)
         }
       })
     })
@@ -60,7 +56,6 @@ router.get('/', function(req, res, next) {
       allCourseIds.push(elem._id);
     })
     Students.find({courseIds: {$in: allCourseIds}}, function(err, students) {
-      // console.log("students: ",students)
       matchup(courses, students);
       var allCourseIdStrings = [];
       courses.forEach(function(elem) {
@@ -78,9 +73,6 @@ router.get('/', function(req, res, next) {
     })
   })
 })
-
-// sort courses by block
-// do we need a course description???
 
 router.post('/', function(req, res, next) {
   Students.findOne({_id: req.session.user._id}, function(err, user) {
@@ -102,7 +94,6 @@ router.post('/', function(req, res, next) {
   })   
 })
 
-
 router.post('/removeCourse', function(req, res, next) {
   Students.update({_id: req.session.user._id}, {$pull: {courseIds: new ObjectId(req.body.courseId)}}, function(err, user) {
     var i = req.session.user.courseIds.indexOf(new ObjectId(req.body.courseId));
@@ -121,6 +112,5 @@ router.get('/:id', function(req, res, next) {
     })
   })
 })
-
 
 module.exports = router;

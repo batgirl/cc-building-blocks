@@ -2,10 +2,11 @@
 <html>
   <head>
     <title>Building Blocks</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"></link>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cosmo/bootstrap.min.css"> -->
     <link rel="stylesheet" href="https://bootswatch.com/readable/bootstrap.min.css">
     <link rel="stylesheet" href="stylesheets/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.js"></script>
   </head>
   <body>
     <nav class="navbar navbar-inverse">
@@ -36,17 +37,34 @@
     <div class="container">
       <h2>All courses:</h2>
       <% if (courses.length) { %>
-      <table class="table table-bordered table-hover">
+      <table id="allCourses" class="table table-bordered table-hover">
+        <thead>
         <tr>
           <th>Title</th>
           <th>Department</th>
+          <th>Professor(s)</th>
           <th>Block</th>
           <% if (!user.courseId) { %><th></th><% } %>
         </tr>
+      </thead>
+      <tbody>
         <% for (var i = 0; i < courses.length; i++) { %>
         <tr>
-          <td><%= courses[i].title %></td>
+          <td><big><%= courses[i].title %></big>
+            <br><button type="button" class="btn btn-default btn-xs showStudent"><span class="glyphicon glyphicon-chevron-right"></span> Enrolled Students</button>
+            <ul class="studentsToShow">
+            <% for (var k = 0; k < courses[i].students.length; k++) { %>
+              <li><%= courses[i].students[k].name %></li>
+            <% } %>
+            </ul>
+          </td>
           <td><%= courses[i].department %></td>
+          <td>
+          <% for (var j = 0; j < courses[i].professors.length; j++) { %>
+            <%= courses[i].professors[j].name %><br>
+            <em><%= courses[i].professors[j].office %></em><br>
+          <% } %>
+          </td>
           <td><%= courses[i].block %></td>
           <% if (!user.courseId) { %>
           <td>
@@ -54,18 +72,48 @@
           </td>
           <% } %>
         </tr>
+        <script>
+        $(document).ready(function(){
+
+          var clicks = 0;
+          $(".studentsToShow").hide();
+          $("button.showStudent").click(function () {
+            if (clicks % 2 === 0) {
+              $(this).next().show();
+              $(this).find("span").removeClass("glyphicon-chevron-right").addClass("glyphicon-chevron-down");              
+            } else {
+              $(this).next().hide();
+              $(this).find("span").removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-right");
+            }
+            clicks++
+          });
+        });
+        </script>
         <% } %>
+      </tbody>
       </table>
+      <script type="text/javascript" src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+      <script type="text/javascript" src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+      <script>
+      $(document).ready(function() {
+        $('#allCourses').DataTable( {
+          "order": [[ 3, "asc" ]],
+          "bPaginate": false,
+          "bFilter": false
+        } );
+      })
+      </script>
       <% } else { %>
-      <p class="lead">There are no courses to show.</p>
+      <p>There are no courses to show.</p>
       <% } %>
-      <% if (user.courseId) { %>
+      <% if (userCourse) { %>
       <h2>Your course:</h2>
-      <p class="lead"><strong><%= professorCourse.title %></strong><br>
-        <em><%= professorCourse.department %>, Block <%= professorCourse.block %></em>
+      <p class="lead"><a class="text-default" href="/professors/courses/<%= userCourse._id %>"><strong><%= userCourse.title %></strong></a><br>
+        <em><%= userCourse.department %>, Block <%= userCourse.block %></em>
       <hr>
-      <form action="/professors/courses/removeCourse" method="post"><button type="submit" class="btn btn-warning btn-xs" name="courseId" value="<%= professorCourse._id %>">Remove this Course</button></form></p>
+      <form action="/professors/courses/removeCourse" method="post"><button type="submit" class="btn btn-warning btn-xs" name="courseId" value="<%= userCourse._id %>">Clear Courses</button></form></p>
       <% } %>
+      <br><a href="/professors/courses/new"><button type="button" class="btn btn-primary">Create Course</button></a>
     </div>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   </body>

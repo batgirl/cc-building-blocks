@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Building Blocks</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://bootswatch.com/readable/bootstrap.min.css">
+    <link rel="stylesheet" href="stylesheets/style.css">
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Building Blocks</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <% if (user) { %>
+            <li><a href="/signout">Sign Out</a></li>
+            <% } else { %>
+            <li><a href="/signup">Sign Up</a></li>
+            <li><a href="/login">Log In</a></li>
+            <% }%>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <h2><strong><%= course.title %></strong></h2>
+      <h4><em><%= course.department %>, Block <%= course.block %></em></h4>
+      <p><%= course.description %></p>
+      <% if (students.length) { %>
+      <h3>Students in class:</h3>
+      <ul>
+      <% for (var i = 0; i < students.length; i++) { %>
+        <li><%= students[i].name %></li>
+      <% } %>
+      </ul>
+      <% } %>
+      <% if (professors.length) { %>
+      <h3>Professor<% if (professors.length > 1) { %>s<% } %>:</h3>
+        <ul>
+        <% for (var i = 0; i < professors.length; i++) { %>
+          <li><%= professors[i].name %>, <em><%= professors[i].office %></em></li>
+        <% } %>
+        </ul>
+      <% } %>
+      <a href="/professors/courses/<%= course._id %>/edit"><button type="button" class="btn btn-success">Edit Course</button></a><br><br>
+      <p><a href="/professors/courses"><< Go Back</a></p>
+    </div>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  </body>
+</html>
